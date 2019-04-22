@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+
+<head>
+	<title>Error</title>
+	<meta http-equiv="Content-Type" context="text/html; charset=utf-8">
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+		<div class="starter-template" style="width: auto;display: table;margin-left: auto;margin-right: auto;">
+	        <h2 style="text-align: center;">
+	        	發生錯誤
+	        	<br/>
+	        	<label th:text="${error}" class="validation-message"></label>
+	        	<div style="width: auto;display: table;margin-left: auto;margin-right: auto;">
+					<form th:action="@{/}" method="get">
+						<button class="btn btn-md btn-warning btn-block" type="Submit" style="width:200px">回到首頁</button>
+					</form>
+				</div>
+	        </h2>
+    	</div>
+	</div>
+
+</body>
+</html>

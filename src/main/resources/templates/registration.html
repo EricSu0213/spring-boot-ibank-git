@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+
+<head>
+	<title>Registration Page</title>
+	<meta http-equiv="Content-Type" context="text/html; charset=utf-8">
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="container" style="width: auto;display: table;margin-left: auto;margin-right: auto; text-align:center;">
+			<form autocomplete="off" action="#" th:action="@{/registration}" th:object="${account}" method="post" class="form-horizontal" role="form">
+				<h2>註冊表單</h2>
+				<div class="form-group">
+					<div>
+						<!--<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+								class="validation-message"></label>-->
+						<input type="text" th:field="*{name}" placeholder="Name" class="form-control" style="width:300px"/>
+						<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message" style="font-size: 20; color: #FF0000;"></label> 
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div>
+						<input type="text" th:field="*{email}" placeholder="Email" class="form-control" style="width:300px"/>
+						<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message" style="font-size: 20; color: #FF0000;"></label>
+					</div>
+				</div>
+				<div class="form-group">
+					<div>
+						<input type="password" th:field="*{password}" placeholder="Password" class="form-control" style="width:300px"/>
+						<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="validation-message" style="font-size: 20; color: #FF0000;"></label>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div>
+						<button type="submit" class="btn btn-primary btn-block">註冊</button>
+					</div>
+				</div>
+				
+				<span th:utext="${successMessage}"></span>
+				
+				
+			</form>
+		</div>
+	</div>
+</body>
+</html>

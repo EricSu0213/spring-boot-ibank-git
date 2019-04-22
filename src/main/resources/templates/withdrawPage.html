@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<head>
+	<title>withdrawPage</title>
+	<meta http-equiv="Content-Type" context="text/html; charset=utf-8">
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container" style="width: auto;display: table;margin-left: auto;margin-right: auto; text-align:center;">
+			<form th:action="@{/withdraw}" method="POST" th:object="${transaction}" class="form-signin" autocomplete="off">
+				<h3 class="form-signin-heading" th:text="提款"></h3>
+				<br/>
+				 
+				<div>
+					<input type="text" th:field="*{amount}" id="amount" name="amount" class="form-control" style="width:300px"/>
+				</div>
+				<label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="validation-message" style="font-size: 20; color: #FF0000;"></label> 
+				</br>
+				<span th:text="${exception}" class="validation-message" style="font-size: 20; color: #FF0000;"></span>
+				<div style="width: auto;display: table;margin-left: auto;margin-right: auto;">
+					<button class="btn btn-md btn-primary btn-block" name="Submit" value="Confirm" type="Submit" style="width:200px">確認</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
