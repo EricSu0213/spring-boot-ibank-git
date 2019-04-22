@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.ibank.entity.Account;
 
 @Repository
-public interface AccountRepository extends CrudRepository<Account, Long>{
+public interface AccountRepository extends CrudRepository<Account, Long> {
 	
 	Account findByEmail(String email);
 
@@ -25,4 +25,9 @@ public interface AccountRepository extends CrudRepository<Account, Long>{
     void updateBalanceByEmail(@Param("balance") Long balance, @Param("email") String email);
     
     void deleteByEmail(String email);
+    
+    @Modifying
+    @Transactional
+    @Query(value = "delete from ACCOUNT_ROLE ar where ar.ACCOUNT_ID in (select a.ID from ACCOUNT a where a.EMAIL=?)", nativeQuery = true)
+    void deleteAccountRole(String email);
 }

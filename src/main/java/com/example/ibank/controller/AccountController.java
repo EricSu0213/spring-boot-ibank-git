@@ -23,12 +23,12 @@ public class AccountController {
 	@Autowired
     private TransactionService transactionService;
 	
-	@Transactional(rollbackFor=Exception.class)
 	@ResponseBody
 	@RequestMapping(value="/deleteAccount", method = RequestMethod.GET)
-    public Boolean registration() throws Exception{
+    public Boolean registration() throws Exception {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
 		
 		if ((auth instanceof AnonymousAuthenticationToken)) {
 
@@ -38,8 +38,7 @@ public class AccountController {
 			UserDetails userDetails = (UserDetails) auth.getPrincipal();
 			String email = userDetails.getUsername();
 			
-			accountService.deleteByEmail(email);
-			transactionService.deleteByAccountEmail(email);
+			accountService.deleteAccount(email);
 		}
 		
         return Boolean.TRUE;
