@@ -41,13 +41,17 @@
 			        <th scope="col">電子郵件</th>
 			        <th scope="col">餘額</th>
 			        <th scope="col">註冊時間</th>
+			        <th scope="col">刪除帳戶</th>
 			    </tr>
-			    <tr  th:each="account, infoStat : ${accountPage.content}" >
-			        <th scope="row" th:text="${infoStat.count}"></th>
+			    <tr th:id="accountTr"th:each="account, infoStat : ${accountPage.content}" >
+			        <td scope="row" th:text="${infoStat.count}"></td>
 			        <td th:text="${account.name}"></td>
-			        <td th:text="${account.email}"></td>
-			        <th th:text="${account.balance}"></th>
-			        <th th:text="${#dates.format(account.date, 'yyyy-MM-dd HH:mm')}"></th>
+			        <td th:id="accountEmail" th:text="${account.email}"></td>
+			        <td th:text="${account.balance}"></td>
+			        <td th:text="${#dates.format(account.date, 'yyyy-MM-dd HH:mm')}"></td>
+			        <td>
+			        	<button th:id="userList_delete_button">刪除</button>
+			        </td>
 			    </tr>
 			</table>
 		</div>
