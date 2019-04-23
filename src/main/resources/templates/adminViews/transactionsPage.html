@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<head>
+	<title>transactionsPage</title>
+	<meta http-equiv="Content-Type" context="text/html; charset=utf-8">
+	<style>
+		table, thead, tr, tbody, th, td {
+			text-align: center;
+		}
+		.table td {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<div th:if="${transactions.totalPages > 0}">
+				<ul class="pagination" style="margin:0;">
+				    <li class="page-item">
+					    <a class="page-link" th:href="@{/admin/transactionsPage(email=${email}, size=${transactions.size}, page=(${transactions.number == 0} ? 1 : ${transactions.number}))}" aria-label="Previous">
+						    <span aria-hidden="true">&laquo;</span>
+						    <span class="sr-only">Previous</span>
+					    </a>
+				    </li>
+			    	<li class="page-item" th:each="pageNumber : ${pageNumbers}">
+				    	<a th:href="@{/admin/transactionsPage(email=${email}, size=${transactions.size}, page=${pageNumber})}" th:text=${pageNumber} th:style="${pageNumber==transactions.number + 1} ? 'background-color:#eee;'"></a>
+				    </li>
+				    <li class="page-item">
+				    	<a class="page-link" th:href="@{/admin/transactionsPage(email=${email}, size=${transactions.size}, page=(${transactions.number + 1 == transactions.totalPages} ? ${transactions.totalPages} : ${transactions.number + 2}))}" aria-label="Next">
+				    		<span aria-hidden="true">&raquo;</span>
+				    		<span class="sr-only">Next</span>
+				    	</a>
+				    </li>
+				</ul>
+			</div>
+			<table class="table table-striped">
+			    <tr>
+			    	<th scope="col" style="width: 80px;">#</th>
+			        <th scope="col">類型</th>
+			        <th scope="col">金額</th>
+			        <th scope="col">時間</th>
+			    </tr>
+			    <tr  th:each="transaction, infoStat : ${transactions.content}" >
+			        <th scope="row" th:text="${infoStat.count}"></th>
+			        <td th:if="${transaction.type} == 'deposit'">存款</td>
+			        <td th:if="${transaction.type} == 'withdraw'">提款</td>
+			        <td th:text="${transaction.amount}"></td>
+			        <th th:text="${transaction.date}"></th>
+			    </tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

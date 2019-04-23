@@ -75,7 +75,6 @@ public class TransactionService {
 	}
 	
 	public void deleteByAccountEmail(String email) throws Exception {
-//		throw new Exception("錯誤");
 		transactionRepository.deleteByAccountEmail(email);
 	}
 	

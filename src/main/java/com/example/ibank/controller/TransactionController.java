@@ -33,7 +33,7 @@ public class TransactionController {
         ModelAndView modelAndView = new ModelAndView();
         Transaction transaction = new Transaction();
 		modelAndView.addObject("transaction", transaction);
-        modelAndView.setViewName("depositPage");
+        modelAndView.setViewName("/userViews/depositPage");
 		
         return modelAndView;
         
@@ -45,7 +45,7 @@ public class TransactionController {
         ModelAndView modelAndView = new ModelAndView();
         Transaction transaction = new Transaction();
 		modelAndView.addObject("transaction", transaction);
-        modelAndView.setViewName("withdrawPage");
+        modelAndView.setViewName("/userViews/withdrawPage");
         
         return modelAndView;
         
@@ -53,7 +53,8 @@ public class TransactionController {
 	
     @RequestMapping(value={"/transactionsPage"}, method = RequestMethod.GET)
     public ModelAndView transactionsPage(Authentication authentication, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size){
-        Integer currentPage = page.orElse(1);
+        
+    	Integer currentPage = page.orElse(1);
         Integer pageSize = size.orElse(10);
     	
         ModelAndView modelAndView = new ModelAndView();
@@ -75,7 +76,7 @@ public class TransactionController {
             modelAndView.addObject("pageNumbers", pageNumbers);
         }
     	
-        modelAndView.setViewName("transactionsPage");
+        modelAndView.setViewName("/userViews/transactionsPage");
         
         return modelAndView;
         
@@ -91,7 +92,7 @@ public class TransactionController {
         ModelAndView modelAndView = new ModelAndView();
     	
     	if (bindingResult.hasErrors()) {
-        	modelAndView.setViewName("depositPage");
+        	modelAndView.setViewName("/userViews/depositPage");
         }
         else {
         	transactionService.deposit(transaction, email);
@@ -112,7 +113,7 @@ public class TransactionController {
         ModelAndView modelAndView = new ModelAndView();
     	
         if (bindingResult.hasErrors()) {
-        	modelAndView.setViewName("withdrawPage");
+        	modelAndView.setViewName("/userViews/withdrawPage");
         }
         else {
 	        try {
@@ -120,7 +121,7 @@ public class TransactionController {
 	            modelAndView.setViewName("redirect:/index");
 	        }
 	        catch(Exception e) {
-	            modelAndView.setViewName("withdrawPage");
+	            modelAndView.setViewName("/userViews/withdrawPage");
 	            modelAndView.addObject("exception", e.getMessage());
 	        }
         }
