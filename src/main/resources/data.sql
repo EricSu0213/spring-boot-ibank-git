@@ -1,5 +1,4 @@
-MERGE
-INTO    role d
+MERGE INTO role d
 USING   (
         SELECT  '1' as id, 'ADMIN' as role FROM dual
         ) s
@@ -10,8 +9,7 @@ WHEN MATCHED THEN
 UPDATE
 SET d.role = s.role;
 
-MERGE
-INTO    role d
+MERGE INTO role d
 USING   (
         SELECT  '2' as id, 'USER' as role FROM dual
         ) s
@@ -28,8 +26,8 @@ USING (
 ) s
 ON (s.EMAIL = a.EMAIL)
 WHEN NOT MATCHED THEN
-INSERT (a.ID, a.NAME, a.EMAIL, a.PASSWORD)
-VALUES (ACCOUNT_SEQ.nextval, s.NAME, s.EMAIL, s.PASSWORD);
+INSERT (a.ID, a.NAME, a.EMAIL, a.PASSWORD, a.CREATED_DATE)
+VALUES (ACCOUNT_SEQ.nextval, s.NAME, s.EMAIL, s.PASSWORD, sysdate);
 
 MERGE INTO ACCOUNT_ROLE ar
 USING (
