@@ -1,7 +1,10 @@
 package com.example.ibank.controller;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,18 +23,26 @@ public class IndexController {
     
     @RequestMapping(value={"/index"}, method = RequestMethod.GET)
     public ModelAndView indexPage(Model model, Authentication authentication){
-    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
     	
-    	String email = userDetails.getUsername();
-    	Account account = accountService.findAccountByEmail(email);
+    	Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+    	ModelAndView modelAndView = new ModelAndView();
     	
-    	Long amount = account.getBalance();
+    	if (roles.contains("ADMIN")){		
+	        modelAndView.setViewName("redirect:/admin/userList");
+    	}
+    	else {
+    		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+	    	
+	    	String email = userDetails.getUsername();
+	    	Account account = accountService.findAccountByEmail(email);
+	    	
+	    	Long amount = account.getBalance();
+	    	
+	        modelAndView.addObject("amount", amount);
+	        modelAndView.addObject("name", account.getName());		
+	        modelAndView.setViewName("index");
+    	}
     	
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("amount", amount);
-        modelAndView.addObject("name", account.getName());		
-        modelAndView.setViewName("index");
-        
         return modelAndView;
         
     }

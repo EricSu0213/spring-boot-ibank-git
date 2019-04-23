@@ -41,6 +41,7 @@ public class AccountController {
 		}
 		
         return Boolean.TRUE;
+        
     }
 
 	@ResponseBody
@@ -51,5 +52,6 @@ public class AccountController {
 		accountService.deleteAccount(email);
 		
         return Boolean.TRUE;
+        
     }
 }
