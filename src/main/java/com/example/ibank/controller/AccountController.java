@@ -6,22 +6,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.ibank.service.AccountService;
-import com.example.ibank.service.TransactionService;
 
 @Controller
 public class AccountController {
 	
 	@Autowired
     private AccountService accountService;
-	
-	@Autowired
-    private TransactionService transactionService;
 	
 	@ResponseBody
 	@RequestMapping(value="/deleteAccount", method = RequestMethod.GET)

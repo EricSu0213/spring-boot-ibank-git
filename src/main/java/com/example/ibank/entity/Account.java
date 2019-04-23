@@ -1,8 +1,10 @@
 package com.example.ibank.entity;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,10 +27,11 @@ public class Account {
     String name;
     
     @NotBlank(message="Email不可為空")
+//    @Email
 	String email;
 
-//    @Column(name = "CREATED_DATE")
-//    Date date;
+    @Column(name = "CREATED_DATE")
+    Date date;
     
     @NotBlank(message="密碼不可為空")
     String password;
@@ -55,13 +58,13 @@ public class Account {
 		this.email = email;
 	}
 
-//	public Date getDate() {
-//		return date;
-//	}
-//
-//	public void setDate(Date date) {
-//		this.date = date;
-//	}
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
 	public String getPassword() {
 		return password;

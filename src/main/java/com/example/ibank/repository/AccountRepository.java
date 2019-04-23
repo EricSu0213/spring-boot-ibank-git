@@ -1,7 +1,10 @@
 package com.example.ibank.repository;
 
+import java.util.Set;
 import java.util.stream.Stream;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ibank.entity.Account;
+import com.example.ibank.entity.Role;
 
 @Repository
 public interface AccountRepository extends CrudRepository<Account, Long> {
@@ -30,4 +34,7 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
     @Transactional
     @Query(value = "delete from ACCOUNT_ROLE ar where ar.ACCOUNT_ID in (select a.ID from ACCOUNT a where a.EMAIL=?)", nativeQuery = true)
     void deleteAccountRole(String email);
+    
+    Page<Account> findByRoles(Set<Role> roles, Pageable pageable);
+    
 }

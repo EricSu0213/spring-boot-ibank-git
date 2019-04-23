@@ -1,9 +1,15 @@
 package com.example.ibank.service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +19,7 @@ import com.example.ibank.entity.Role;
 import com.example.ibank.repository.AccountRepository;
 import com.example.ibank.repository.RoleRepository;
 
-@Service("userService")
+@Service
 public class AccountService {
 	    
 	@Autowired
@@ -30,7 +36,7 @@ public class AccountService {
 	
 	public void saveAccount(Account account) {
 		account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
-//		account.setDate(new Date());
+		account.setDate(new Date());
 		Role userRole = roleRepository.findByRole("USER");
 		account.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
 		
@@ -54,5 +60,16 @@ public class AccountService {
     	accountRepository.deleteAccountRole(email);
     	accountRepository.deleteByEmail(email);
 		transactionService.deleteByAccountEmail(email);
+    }
+    
+    public Page<Account> findByRole(Role role, Integer page, Integer size) {
+    	
+    	Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "Date");
+		
+    	Set<Role> roles = new HashSet<Role>(Arrays.asList(role));
+    	
+		Page<Account> accountPage = accountRepository.findByRoles(roles, pageable);
+		
+		return accountPage;
     }
 }

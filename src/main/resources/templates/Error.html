@@ -9,8 +9,11 @@
 <body>
 
 	<div layout:fragment="content">
-		<div class="starter-template" style="width: auto;display: table;margin-left: auto;margin-right: auto;">
-	        <h2 style="text-align: center;">
+		<div class="starter-template" style="width: auto;display: table;margin-left: auto;margin-right: auto;"  th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">
+			<h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>
+			<p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>
+			<a href="index.html" th:href="@{/index.html}">Back to Home Page</a>
+			<h2 style="text-align: center;">
 	        	發生錯誤
 	        	<br/>
 	        	<label th:text="${error}" class="validation-message"></label>
