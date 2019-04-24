@@ -44,7 +44,7 @@ public class TransactionService {
     	transaction.setDate(new Date());
 		transactionRepository.save(transaction);
 		
-		Account account = accountService.findAccountByEmail(email);
+		Account account = accountService.findByEmail(email);
 		
 		Long balance = account.getBalance();
     	balance = balance + transaction.getAmount();
@@ -56,7 +56,7 @@ public class TransactionService {
 	@Transactional(rollbackFor=Exception.class)
 	public void withdraw(Transaction transaction, String email) throws Exception{
 		
-		Account account = accountService.findAccountByEmail(email);
+		Account account = accountService.findByEmail(email);
 		
 		Long balance = account.getBalance();
     	balance = balance - transaction.getAmount();
@@ -86,4 +86,58 @@ public class TransactionService {
 		return transactionPage;
 	}
 	
+	@Transactional(rollbackFor=Exception.class)
+	public void transfer(String userEmail, String remoteEmail, Long amount) throws Exception {
+		
+		Account remoteAccount = accountService.findByEmail(remoteEmail);
+		Account userAccount = accountService.findByEmail(userEmail);
+		
+		if (remoteAccount == null) {
+			throw new Exception("此帳戶不存在");
+		}
+		else {
+			try {
+				/////////扣款////////
+				Long balance1 = userAccount.getBalance();
+		    	balance1 = balance1 - amount;
+		    	
+		    	if (balance1.compareTo(0L) <0) {
+		    		throw new Exception("餘額不足");
+		    	}
+		    	
+		    	userAccount.setBalance(balance1);
+		    	accountService.updateBalanceByEmail(balance1, userEmail);
+		    	
+		    	/////////加款////////
+		    	Long balance2 = remoteAccount.getBalance();
+		    	balance2 = balance2 + amount;
+		    	
+		    	remoteAccount.setBalance(balance2);
+		    	accountService.updateBalanceByEmail(balance2, remoteEmail);
+		    	
+		    	/////////交易紀錄////////
+		    	Transaction transaction1 = new Transaction();
+		    	transaction1.setAccountEmail(userEmail);
+		    	transaction1.setAmount(amount);
+		    	transaction1.setDate(new Date());
+		    	transaction1.setType(Transaction.TRASACTION_TRANSFER);
+		    	transaction1.setRemoteEmail(remoteEmail);
+		    	
+		    	transactionRepository.save(transaction1);
+		    	
+		    	Transaction transaction2 = new Transaction();
+		    	transaction2.setAccountEmail(remoteEmail);
+		    	transaction2.setAmount(amount);
+		    	transaction2.setDate(new Date());
+		    	transaction2.setType(Transaction.TRASACTION_TRANSFER);
+		    	transaction2.setRemoteEmail(userEmail);
+		    	
+		    	transactionRepository.save(transaction2);
+			}
+			catch(Exception e) {
+				throw e;
+			}
+		}
+		
+	}
 }

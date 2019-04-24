@@ -27,6 +27,7 @@
 				<ul class="nav navbar-nav">
 					<li><a class="nav-item nav-link active" sec:authorize="hasAuthority('USER')" th:href="@{/depositPage}">存款</a></li>
 					<li><a class="nav-item nav-link active" sec:authorize="hasAuthority('USER')" th:href="@{/withdrawPage}">提款</a></li>
+					<li><a class="nav-item nav-link active" sec:authorize="hasAuthority('USER')" th:href="@{/transferPage}">匯款</a></li>
 					<li><a class="nav-item nav-link active" sec:authorize="hasAuthority('USER')" th:href="@{/transactionsPage}">交易列表</a></li>
 					<li><a class="nav-item nav-link active" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/userList}">用戶列表</a></li>
 				</ul>

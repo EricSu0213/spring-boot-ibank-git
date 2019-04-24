@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.ibank.entity.Transaction;
+import com.example.ibank.model.TransferModel;
 import com.example.ibank.service.TransactionService;
 
 @Controller
@@ -81,6 +82,18 @@ public class TransactionController {
         return modelAndView;
         
     }
+	
+    @RequestMapping(value={"/transferPage"}, method = RequestMethod.GET)
+    public ModelAndView transferPage(){
+    	
+        ModelAndView modelAndView = new ModelAndView();
+        TransferModel transferModel = new TransferModel();
+		modelAndView.addObject("transferModel", transferModel);
+        modelAndView.setViewName("/userViews/transferPage");
+        
+        return modelAndView;
+        
+    }
     
     @RequestMapping(value={"/deposit"}, method = RequestMethod.POST)
     public ModelAndView deposit(Authentication authentication, @Valid Transaction transaction, BindingResult bindingResult){
@@ -129,4 +142,29 @@ public class TransactionController {
         return modelAndView;
         
     }
+    
+    @RequestMapping(value={"/transfer"}, method = RequestMethod.POST)
+    public ModelAndView transfer(Authentication authentication, @Valid TransferModel transferModel, BindingResult bindingResult){
+    	
+    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    	String userEmail = userDetails.getUsername();
+    	
+    	String RemoteEmail = transferModel.getRemoteEmail();
+    	Long amount = transferModel.getAmount();
+    	
+    	ModelAndView modelAndView = new ModelAndView();
+    	
+    	try {
+    		transactionService.transfer(userEmail, RemoteEmail, amount);
+    		modelAndView.setViewName("redirect:/index");
+    	}
+    	catch(Exception e) {
+    		modelAndView.addObject("exception", e.getMessage());
+    		modelAndView.setViewName("/userViews/transferPage");
+    	}
+    	        
+        return modelAndView;
+        
+    }
+    
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
 <head>
-	<title>transactionsPage</title>
+	<title>userListPage</title>
 	<meta http-equiv="Content-Type" context="text/html; charset=utf-8">
 	<style>
 		table, thead, tr, tbody, th, td {
@@ -41,8 +41,8 @@
 			        <th scope="col">電子郵件</th>
 			        <th scope="col">餘額</th>
 			        <th scope="col">註冊時間</th>
-			        <th scope="col">刪除帳戶</th>
-			        <th scope="col">交易紀錄</th>
+			        <th scope="col" style="width: 80px;">刪除帳戶</th>
+			        <th scope="col" style="width: 100px;">交易紀錄</th>
 			    </tr>
 			    <tr th:id="accountTr"th:each="account, infoStat : ${accountPage.content}" >
 			        <td scope="row" th:text="${infoStat.count}"></td>

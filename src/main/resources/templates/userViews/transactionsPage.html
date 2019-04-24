@@ -40,13 +40,16 @@
 			        <th scope="col">類型</th>
 			        <th scope="col">金額</th>
 			        <th scope="col">時間</th>
+			        <th scope="col">交易對象</th>
 			    </tr>
 			    <tr  th:each="transaction, infoStat : ${transactions.content}" >
 			        <th scope="row" th:text="${infoStat.count}"></th>
 			        <td th:if="${transaction.type} == 'deposit'">存款</td>
 			        <td th:if="${transaction.type} == 'withdraw'">提款</td>
+			        <td th:if="${transaction.type} == 'transfer'">匯款</td>
 			        <td th:text="${transaction.amount}"></td>
-			        <th th:text="${transaction.date}"></th>
+			        <th th:text="${#dates.format(transaction.date, 'yyyy-MM-dd HH:mm')}"></th>
+			        <th th:text="${transaction.remoteEmail}"></th>
 			    </tr>
 			</table>
 		</div>

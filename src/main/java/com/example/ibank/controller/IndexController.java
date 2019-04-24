@@ -34,7 +34,7 @@ public class IndexController {
     		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 	    	
 	    	String email = userDetails.getUsername();
-	    	Account account = accountService.findAccountByEmail(email);
+	    	Account account = accountService.findByEmail(email);
 	    	
 	    	Long amount = account.getBalance();
 	    	

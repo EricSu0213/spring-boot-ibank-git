@@ -43,7 +43,7 @@ public class AccountService {
 		accountRepository.save(account);
 	}
 	
-    public Account findAccountByEmail(String email) {
+    public Account findByEmail(String email) {
         return accountRepository.findByEmail(email);
     }
 	

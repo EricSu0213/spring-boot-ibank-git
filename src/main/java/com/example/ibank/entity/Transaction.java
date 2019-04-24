@@ -18,6 +18,8 @@ public class Transaction {
 	
 	public static String TRASACTION_DEPOSIT = "deposit";
 	
+	public static String TRASACTION_TRANSFER = "transfer";
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TRASACTION_SEQ")
     @SequenceGenerator(sequenceName = "transaction_seq", allocationSize = 1, name = "TRASACTION_SEQ")
@@ -33,6 +35,8 @@ public class Transaction {
 	
 	@Column(name = "CREATED_DATE")
 	Date date;
+	
+	String remoteEmail;
 
 	public String getAccountEmail() {
 		return accountEmail;
@@ -64,6 +68,14 @@ public class Transaction {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public String getRemoteEmail() {
+		return remoteEmail;
+	}
+
+	public void setRemoteEmail(String remoteEmail) {
+		this.remoteEmail = remoteEmail;
 	}
 	
 }
