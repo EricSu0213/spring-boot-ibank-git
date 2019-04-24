@@ -46,7 +46,7 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
         
         Role userRole = roleService.findByRole(Role.ROLE_USER);
-        Page<Account> accountPage = accountService.findByRole(userRole, currentPage - 1, pageSize);
+        Page<Account> accountPage = accountService.findByRoleAndActive(userRole, currentPage - 1, pageSize, true);
         
     	modelAndView.addObject("accountPage", accountPage);
     	
@@ -83,7 +83,7 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
         
 //    	List<Transaction> transactions = transactionService.findByAccountEmailOrderByDateDesc(email);
-    	Page<Transaction> transactionPage = transactionService.findPaginatedByAccountEmail(email, currentPage - 1, pageSize);
+    	Page<Transaction> transactionPage = transactionService.findPaginatedByAccountEmailAndActive(email, currentPage - 1, pageSize, true);
         
 //		modelAndView.addObject("transactions", transactions);
     	modelAndView.addObject("transactions", transactionPage);

@@ -39,6 +39,8 @@ public class Transaction {
 	Date date;
 	
 	String remoteEmail;
+	
+	Boolean active;
 
 	public String getAccountEmail() {
 		return accountEmail;
@@ -78,6 +80,14 @@ public class Transaction {
 
 	public void setRemoteEmail(String remoteEmail) {
 		this.remoteEmail = remoteEmail;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 	
 }

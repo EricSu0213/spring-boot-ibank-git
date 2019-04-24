@@ -42,9 +42,10 @@ public class TransactionService {
 		transaction.setType(Transaction.TRASACTION_DEPOSIT);
     	transaction.setAccountEmail(email);
     	transaction.setDate(new Date());
+    	transaction.setActive(true);
 		transactionRepository.save(transaction);
 		
-		Account account = accountService.findByEmail(email);
+		Account account = accountService.findByEmailAndActive(email, true);
 		
 		Long balance = account.getBalance();
     	balance = balance + transaction.getAmount();
@@ -56,7 +57,7 @@ public class TransactionService {
 	@Transactional(rollbackFor=Exception.class)
 	public void withdraw(Transaction transaction, String email) throws Exception{
 		
-		Account account = accountService.findByEmail(email);
+		Account account = accountService.findByEmailAndActive(email, true);
 		
 		Long balance = account.getBalance();
     	balance = balance - transaction.getAmount();
@@ -68,14 +69,17 @@ public class TransactionService {
 		transaction.setType(Transaction.TRASACTION_WITHDRAW);
     	transaction.setAccountEmail(email);
     	transaction.setDate(new Date());
+    	transaction.setActive(true);
+    	
 		transactionRepository.save(transaction);
     	
     	accountService.updateBalanceByEmail(balance, email);
     	
 	}
 	
-	public void deleteByAccountEmail(String email) throws Exception {
-		transactionRepository.deleteByAccountEmail(email);
+	public void deleteByAccountEmail(String accountEmail) throws Exception {
+//		transactionRepository.deleteByAccountEmail(email);
+		transactionRepository.updateActiveByAccountEmail(false, accountEmail);
 	}
 	
 	public Page<Transaction> findPaginatedByAccountEmail(String email, Integer page, Integer size) {
@@ -86,11 +90,19 @@ public class TransactionService {
 		return transactionPage;
 	}
 	
+	public Page<Transaction> findPaginatedByAccountEmailAndActive(String email, Integer page, Integer size, Boolean active) {
+		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "Date");
+		
+		Page<Transaction> transactionPage = transactionRepository.findByAccountEmailAndActive(email, pageable, active);
+		
+		return transactionPage;
+	}
+	
 	@Transactional(rollbackFor=Exception.class)
 	public void transfer(String userEmail, String remoteEmail, Long amount) throws Exception {
 		
-		Account remoteAccount = accountService.findByEmail(remoteEmail);
-		Account userAccount = accountService.findByEmail(userEmail);
+		Account remoteAccount = accountService.findByEmailAndActive(remoteEmail, true);
+		Account userAccount = accountService.findByEmailAndActive(userEmail, true);
 		
 		if (remoteAccount == null) {
 			throw new Exception("此帳戶不存在");
@@ -122,6 +134,7 @@ public class TransactionService {
 		    	transaction1.setDate(new Date());
 		    	transaction1.setType(Transaction.TRASACTION_TRANSFER);
 		    	transaction1.setRemoteEmail(remoteEmail);
+		    	transaction1.setActive(true);
 		    	
 		    	transactionRepository.save(transaction1);
 		    	
@@ -131,6 +144,7 @@ public class TransactionService {
 		    	transaction2.setDate(new Date());
 		    	transaction2.setType(Transaction.TRASACTION_RECIPIENT);
 		    	transaction2.setRemoteEmail(userEmail);
+		    	transaction2.setActive(true);
 		    	
 		    	transactionRepository.save(transaction2);
 			}

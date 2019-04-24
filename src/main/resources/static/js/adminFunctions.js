@@ -1,12 +1,7 @@
 /**
  * 
  */
-$(function(){
-	console.log('hello2');
-	for(var key in window.location){
-		console.log(key + ':'+window.location[key])
-	}
-	
+$(function(){	
 	$('[id="userList_delete_button"]').click(function() {
 		if(confirm("確定要刪除帳號嗎?")){
 			var accountTr = $(this).closest('tr');

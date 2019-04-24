@@ -62,7 +62,7 @@ public class TransactionController {
         String email = authentication.getName();
         
 //    	List<Transaction> transactions = transactionService.findByAccountEmailOrderByDateDesc(email);
-    	Page<Transaction> transactionPage = transactionService.findPaginatedByAccountEmail(email, currentPage - 1, pageSize);
+    	Page<Transaction> transactionPage = transactionService.findPaginatedByAccountEmailAndActive(email, currentPage - 1, pageSize, true);
         
 //		modelAndView.addObject("transactions", transactions);
     	modelAndView.addObject("transactions", transactionPage);

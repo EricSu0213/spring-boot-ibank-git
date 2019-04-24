@@ -19,6 +19,8 @@ import com.example.ibank.entity.Role;
 public interface AccountRepository extends CrudRepository<Account, Long> {
 	
 	Account findByEmail(String email);
+	
+	Account findByEmailAndActive(String email, Boolean active);
 
     @Query("select a from Account a where a.email = :email")
     Stream<Account> findByEmailReturnStream(@Param("email") String email);
@@ -36,5 +38,12 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
     void deleteAccountRole(String email);
     
     Page<Account> findByRoles(Set<Role> roles, Pageable pageable);
+    
+    Page<Account> findByRolesAndActive(Set<Role> roles, Pageable pageable, Boolean active);
+    
+    @Modifying
+    @Transactional
+    @Query(value = "update Account a set a.active = :active where a.email = :email", nativeQuery = true)
+    void updateActiveByEmail(@Param("active") Boolean active, @Param("email") String email);
     
 }

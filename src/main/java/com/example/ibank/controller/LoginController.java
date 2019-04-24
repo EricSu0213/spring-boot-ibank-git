@@ -48,7 +48,7 @@ public class LoginController {
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid Account account, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        Account accountExists = accountService.findByEmail(account.getEmail());
+        Account accountExists = accountService.findByEmailAndActive(account.getEmail(), true);
         
         if (accountExists != null) {
             bindingResult
@@ -59,8 +59,7 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
-        	account.setBalance(0L);
-            accountService.saveAccount(account);
+            accountService.createAccount(account);
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("account", new Account());
             modelAndView.setViewName("login");

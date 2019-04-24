@@ -34,11 +34,13 @@ public class AccountService {
 	@Autowired
 	private TransactionService transactionService;
 	
-	public void saveAccount(Account account) {
+	public void createAccount(Account account) {
+		account.setBalance(0L);
 		account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
 		account.setDate(new Date());
 		Role userRole = roleRepository.findByRole("USER");
 		account.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+		account.setActive(true);
 		
 		accountRepository.save(account);
 	}
@@ -46,20 +48,31 @@ public class AccountService {
     public Account findByEmail(String email) {
         return accountRepository.findByEmail(email);
     }
+    
+    public Account findByEmailAndActive(String email, Boolean active) {
+    	return accountRepository.findByEmailAndActive(email, active);
+    }
 	
     public void updateBalanceByEmail(Long balance, String email) {
     	accountRepository.updateBalanceByEmail(balance, email);
     }
     
     public void deleteByEmail(String email) {
-    	accountRepository.deleteByEmail(email);
+//    	accountRepository.deleteByEmail(email);
+    	accountRepository.updateActiveByEmail(false, email);
     }
     
     @Transactional(rollbackFor=Exception.class)
     public void deleteAccount(String email) throws Exception {
-    	accountRepository.deleteAccountRole(email);
-    	accountRepository.deleteByEmail(email);
-		transactionService.deleteByAccountEmail(email);
+//    	accountRepository.deleteAccountRole(email);
+//    	accountRepository.deleteByEmail(email);
+    	try {
+	    	accountRepository.updateActiveByEmail(false, email);
+			transactionService.deleteByAccountEmail(email);
+    	}
+    	catch(Exception e){
+    		System.out.println(e.getMessage());
+    	}
     }
     
     public Page<Account> findByRole(Role role, Integer page, Integer size) {
@@ -69,6 +82,17 @@ public class AccountService {
     	Set<Role> roles = new HashSet<Role>(Arrays.asList(role));
     	
 		Page<Account> accountPage = accountRepository.findByRoles(roles, pageable);
+		
+		return accountPage;
+    }
+    
+    public Page<Account> findByRoleAndActive(Role role, Integer page, Integer size, Boolean active) {
+    	
+    	Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "Date");
+		
+    	Set<Role> roles = new HashSet<Role>(Arrays.asList(role));
+    	
+		Page<Account> accountPage = accountRepository.findByRolesAndActive(roles, pageable, active);
 		
 		return accountPage;
     }
