@@ -23,10 +23,8 @@ public class AccountController {
     public Boolean deleteAccount() throws Exception {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
 		
 		if ((auth instanceof AnonymousAuthenticationToken)) {
-
             return Boolean.FALSE;
 		}
 		else {

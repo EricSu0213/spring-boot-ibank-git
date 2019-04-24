@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,9 +59,7 @@ public class TransactionController {
     	
         ModelAndView modelAndView = new ModelAndView();
         
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    	
-    	String email = userDetails.getUsername();
+        String email = authentication.getName();
         
 //    	List<Transaction> transactions = transactionService.findByAccountEmailOrderByDateDesc(email);
     	Page<Transaction> transactionPage = transactionService.findPaginatedByAccountEmail(email, currentPage - 1, pageSize);
@@ -98,9 +95,7 @@ public class TransactionController {
     @RequestMapping(value={"/deposit"}, method = RequestMethod.POST)
     public ModelAndView deposit(Authentication authentication, @Valid Transaction transaction, BindingResult bindingResult){
     	
-    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    	
-    	String email = userDetails.getUsername();
+    	String email = authentication.getName();
     	
         ModelAndView modelAndView = new ModelAndView();
     	
@@ -119,9 +114,7 @@ public class TransactionController {
     @RequestMapping(value={"/withdraw"}, method = RequestMethod.POST)
     public ModelAndView withdraw(Authentication authentication, @Valid Transaction transaction, BindingResult bindingResult) throws Exception{
     	
-    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    	
-    	String email = userDetails.getUsername();
+    	String email = authentication.getName();
     	
         ModelAndView modelAndView = new ModelAndView();
     	
@@ -146,8 +139,7 @@ public class TransactionController {
     @RequestMapping(value={"/transfer"}, method = RequestMethod.POST)
     public ModelAndView transfer(Authentication authentication, @Valid TransferModel transferModel, BindingResult bindingResult){
     	
-    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    	String userEmail = userDetails.getUsername();
+    	String userEmail = authentication.getName();
     	
     	String RemoteEmail = transferModel.getRemoteEmail();
     	Long amount = transferModel.getAmount();

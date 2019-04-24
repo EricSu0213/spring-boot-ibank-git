@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -27,7 +28,7 @@ public class Account {
     String name;
     
     @NotBlank(message="Email不可為空")
-//    @Email
+    @Email(message="Email不合法")
 	String email;
 
     @Column(name = "CREATED_DATE")

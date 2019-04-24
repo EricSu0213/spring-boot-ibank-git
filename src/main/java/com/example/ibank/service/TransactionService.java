@@ -129,7 +129,7 @@ public class TransactionService {
 		    	transaction2.setAccountEmail(remoteEmail);
 		    	transaction2.setAmount(amount);
 		    	transaction2.setDate(new Date());
-		    	transaction2.setType(Transaction.TRASACTION_TRANSFER);
+		    	transaction2.setType(Transaction.TRASACTION_RECIPIENT);
 		    	transaction2.setRemoteEmail(userEmail);
 		    	
 		    	transactionRepository.save(transaction2);

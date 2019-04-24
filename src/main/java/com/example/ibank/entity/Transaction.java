@@ -20,6 +20,8 @@ public class Transaction {
 	
 	public static String TRASACTION_TRANSFER = "transfer";
 	
+	public static String TRASACTION_RECIPIENT = "recipient";
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TRASACTION_SEQ")
     @SequenceGenerator(sequenceName = "transaction_seq", allocationSize = 1, name = "TRASACTION_SEQ")

@@ -7,17 +7,23 @@
 <body>
 	<div layout:fragment="content">
 		<div class="container" style="width: auto;display: table;margin-left: auto;margin-right: auto; text-align:center;">
-			<form th:action="@{/transfer}" method="POST" th:object="${transferModel}" class="form-signin" autocomplete="off">
+			<form th:action="@{/transfer}" method="POST" th:object="${transferModel}" class="form-horizontal" autocomplete="off">
 				<h3 class="form-signin-heading" th:text="匯款"></h3>
 				<br/>
-				 
-				<div>
-					<input type="text" th:placeholder="Email" th:field="*{remoteEmail}" id="remoteEmail" name="remoteEmail" class="form-control" style="width:300px"/>
-					</br>
-					<input type="text" th:placeholder="Amount" th:field="*{amount}" id="amount" name="amount" class="form-control" style="width:300px"/>
+				
+				<div class="form-group">
+					<label for="remoteEmail" class="col-sm-4 control-label">對方Email：</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" th:placeholder="Email" th:field="*{remoteEmail}" id="remoteEmail" />
+					</div>
 				</div>
-				<label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="validation-message" style="font-size: 20; color: #FF0000;"></label> 
-				</br>
+				<div class="form-group">
+					<label for="amount" class="col-sm-4 control-label">金額：</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" th:placeholder="Amount" th:field="*{amount}" id="amount" />
+					</div>
+				</div>
+				<label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="validation-message" style="font-size: 20; color: #FF0000;"></label>
 				<span th:text="${exception}" class="validation-message" style="font-size: 20; color: #FF0000;"></span>
 				<div style="width: auto;display: table;margin-left: auto;margin-right: auto;">
 					<button class="btn btn-md btn-primary btn-block" name="Submit" value="Confirm" type="Submit" style="width:200px">確認</button>
