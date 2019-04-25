@@ -38,20 +38,20 @@ public class TransactionService {
 	
 	@Transactional(rollbackFor=Exception.class)
 	public void deposit(Transaction transaction, String email) {
+		Account account = accountService.findByEmailAndActive(email, true);
+		
+		Long balance = account.getBalance();
+    	balance = balance + transaction.getAmount();
 		
 		transaction.setType(Transaction.TRASACTION_DEPOSIT);
     	transaction.setAccountEmail(email);
     	transaction.setDate(new Date());
     	transaction.setActive(true);
+    	transaction.setBalance(balance);
 		transactionRepository.save(transaction);
-		
-		Account account = accountService.findByEmailAndActive(email, true);
-		
-		Long balance = account.getBalance();
-    	balance = balance + transaction.getAmount();
     	
     	accountService.updateBalanceByEmail(balance, email);
-    	
+		
 	}
 	
 	@Transactional(rollbackFor=Exception.class)
@@ -70,6 +70,7 @@ public class TransactionService {
     	transaction.setAccountEmail(email);
     	transaction.setDate(new Date());
     	transaction.setActive(true);
+    	transaction.setBalance(balance);
     	
 		transactionRepository.save(transaction);
     	
@@ -120,13 +121,6 @@ public class TransactionService {
 		    	userAccount.setBalance(balance1);
 		    	accountService.updateBalanceByEmail(balance1, userEmail);
 		    	
-		    	/////////加款////////
-		    	Long balance2 = remoteAccount.getBalance();
-		    	balance2 = balance2 + amount;
-		    	
-		    	remoteAccount.setBalance(balance2);
-		    	accountService.updateBalanceByEmail(balance2, remoteEmail);
-		    	
 		    	/////////交易紀錄////////
 		    	Transaction transaction1 = new Transaction();
 		    	transaction1.setAccountEmail(userEmail);
@@ -135,9 +129,18 @@ public class TransactionService {
 		    	transaction1.setType(Transaction.TRASACTION_TRANSFER);
 		    	transaction1.setRemoteEmail(remoteEmail);
 		    	transaction1.setActive(true);
+		    	transaction1.setBalance(balance1);
 		    	
 		    	transactionRepository.save(transaction1);
 		    	
+		    	/////////加款////////
+		    	Long balance2 = remoteAccount.getBalance();
+		    	balance2 = balance2 + amount;
+		    	
+		    	remoteAccount.setBalance(balance2);
+		    	accountService.updateBalanceByEmail(balance2, remoteEmail);
+		    	
+		    	/////////交易紀錄////////
 		    	Transaction transaction2 = new Transaction();
 		    	transaction2.setAccountEmail(remoteEmail);
 		    	transaction2.setAmount(amount);
@@ -145,6 +148,7 @@ public class TransactionService {
 		    	transaction2.setType(Transaction.TRASACTION_RECIPIENT);
 		    	transaction2.setRemoteEmail(userEmail);
 		    	transaction2.setActive(true);
+		    	transaction2.setBalance(balance2);
 		    	
 		    	transactionRepository.save(transaction2);
 			}

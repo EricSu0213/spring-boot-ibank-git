@@ -39,6 +39,7 @@
 			    	<th scope="col" style="width: 80px;">#</th>
 			        <th scope="col">類型</th>
 			        <th scope="col">金額</th>
+			        <th scope="col">餘額</th>
 			        <th scope="col">時間</th>
 			        <th scope="col">交易對象</th>
 			    </tr>
@@ -49,6 +50,7 @@
 			        <td th:if="${transaction.type} == 'transfer'">匯款</td>
 			        <td th:if="${transaction.type} == 'recipient'">受款</td>
 			        <td th:text="${transaction.amount}"></td>
+			        <td th:text="${transaction.balance}"></td>
 			        <th th:text="${#dates.format(transaction.date, 'yyyy-MM-dd HH:mm')}"></th>
 			        <th th:text="${transaction.remoteEmail}"></th>
 			    </tr>

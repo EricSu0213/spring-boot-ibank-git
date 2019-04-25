@@ -41,6 +41,8 @@ public class Transaction {
 	String remoteEmail;
 	
 	Boolean active;
+	
+	Long balance;
 
 	public String getAccountEmail() {
 		return accountEmail;
@@ -88,6 +90,14 @@ public class Transaction {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public Long getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Long balance) {
+		this.balance = balance;
 	}
 	
 }
