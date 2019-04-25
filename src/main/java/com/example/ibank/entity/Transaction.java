@@ -23,14 +23,18 @@ public class Transaction {
 	public static String TRASACTION_RECIPIENT = "recipient";
 	
 	@Id
+	@Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TRASACTION_SEQ")
     @SequenceGenerator(sequenceName = "transaction_seq", allocationSize = 1, name = "TRASACTION_SEQ")
     Long id;
 	
+	@Column(name = "ACCOUNT_EMAIL")
 	String accountEmail;
 	
+	@Column(name = "TYPE")
 	String type;
 	
+	@Column(name = "AMOUNT")
 	@NotNull(message="請填寫金額")
 	@Min(value = 0,message="輸入金額不可小於0")
 	Long amount;
@@ -38,10 +42,13 @@ public class Transaction {
 	@Column(name = "CREATED_DATE")
 	Date date;
 	
+	@Column(name = "REMOTE_EMAIL")
 	String remoteEmail;
 	
+	@Column(name = "ACTIVE")
 	Boolean active;
 	
+	@Column(name = "BALANCE")
 	Long balance;
 
 	public String getAccountEmail() {

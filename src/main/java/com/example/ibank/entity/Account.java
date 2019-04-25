@@ -20,13 +20,16 @@ import javax.validation.constraints.NotBlank;
 public class Account {
 	
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ACCOUNT_SEQ")
     @SequenceGenerator(sequenceName = "account_seq", allocationSize = 1, name = "ACCOUNT_SEQ")
     Long id;
 	
+    @Column(name = "NAME")
     @NotBlank(message="使用者名稱不可為空")
     String name;
     
+    @Column(name = "EMAIL")
     @NotBlank(message="Email不可為空")
     @Email(message="Email不合法")
 	String email;
@@ -34,13 +37,15 @@ public class Account {
     @Column(name = "CREATED_DATE")
     Date date;
     
+    @Column(name = "PASSWORD")
     @NotBlank(message="密碼不可為空")
     String password;
     
+    @Column(name = "BALANCE")
     Long balance;
     
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "account_role", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "ACCOUNT_ROLE", joinColumns = @JoinColumn(name = "ACCOUNT_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
     Set<Role> roles;
     
     Boolean active;

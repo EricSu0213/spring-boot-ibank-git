@@ -1,5 +1,6 @@
 package com.example.ibank.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,9 +14,11 @@ public class Role {
 	public static String ROLE_USER = "USER";
 	
 	@Id
+	@Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 	
+	@Column(name = "ROLE")
     String role;
 
 	public String getRole() {
