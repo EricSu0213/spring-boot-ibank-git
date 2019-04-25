@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.ibank.entity.Account;
 import com.example.ibank.service.AccountService;
@@ -46,7 +47,7 @@ public class LoginController {
     }
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid Account account, BindingResult bindingResult) {
+    public ModelAndView createNewUser(@Valid Account account, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView();
         Account accountExists = accountService.findByEmailAndActive(account.getEmail(), true);
         
@@ -59,10 +60,9 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
-            accountService.createAccount(account);
-            modelAndView.addObject("successMessage", "User has been registered successfully");
-            modelAndView.addObject("account", new Account());
-            modelAndView.setViewName("login");
+            redirectAttributes.addFlashAttribute("successMessage", "註冊成功");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+            modelAndView.setViewName("redirect:/login");
 
         }
         return modelAndView;

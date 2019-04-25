@@ -37,7 +37,8 @@
 				<form th:action="@{/registration}" method="get">
 					<button class="btn btn-md btn-warning btn-block" type="Submit" style="width:200px">註冊</button>
 				</form>
-			</div>	
+			</div>
+			<div th:if="${successMessage}" th:text="${successMessage}" th:class="${'alert success'}"/>
 		</div>
 	</div>
 </body>
