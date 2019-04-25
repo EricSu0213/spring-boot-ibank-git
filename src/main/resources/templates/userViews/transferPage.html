@@ -23,6 +23,7 @@
 						<input type="text" class="form-control" th:placeholder="Amount" th:field="*{amount}" id="amount" />
 					</div>
 				</div>
+				<label th:if="${#fields.hasErrors('remoteEmail')}" th:errors="*{remoteEmail}" class="validation-message" style="font-size: 20; color: #FF0000;"></label>
 				<label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="validation-message" style="font-size: 20; color: #FF0000;"></label>
 				<span th:text="${exception}" class="validation-message" style="font-size: 20; color: #FF0000;"></span>
 				<div style="width: auto;display: table;margin-left: auto;margin-right: auto;">

@@ -147,14 +147,19 @@ public class TransactionController {
     	ModelAndView modelAndView = new ModelAndView();
     	
     	if(!userEmail.equals(RemoteEmail)) {
-	    	try {
-	    		transactionService.transfer(userEmail, RemoteEmail, amount);
-	    		modelAndView.setViewName("redirect:/index");
-	    	}
-	    	catch(Exception e) {
-	    		modelAndView.addObject("exception", e.getMessage());
-	    		modelAndView.setViewName("/userViews/transferPage");
-	    	}
+    		if(bindingResult.hasErrors()) {
+                modelAndView.setViewName("/userViews/transferPage");
+        	}
+    		else {
+		    	try {
+		    		transactionService.transfer(userEmail, RemoteEmail, amount);
+		    		modelAndView.setViewName("redirect:/index");
+		    	}
+		    	catch(Exception e) {
+		    		modelAndView.addObject("exception", e.getMessage());
+		    		modelAndView.setViewName("/userViews/transferPage");
+		    	}
+    		}
     	}
     	else {
     		modelAndView.addObject("transferModel", transferModel);
