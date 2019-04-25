@@ -27,7 +27,7 @@ public class IndexController {
     	Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
     	ModelAndView modelAndView = new ModelAndView();
     	
-    	if (roles.contains("ADMIN")){		
+    	if (roles != null && roles.contains("ADMIN")){		
 	        modelAndView.setViewName("redirect:/admin/userList");
     	}
     	else {

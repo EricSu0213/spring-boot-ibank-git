@@ -27,8 +27,7 @@ public class LoginController {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		if (!(auth instanceof AnonymousAuthenticationToken)) {
-
+		if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
 		    /* The user is logged in */
 			return "redirect:/index";
 		}
@@ -39,10 +38,21 @@ public class LoginController {
 	
 	@RequestMapping(value="/registration", method = RequestMethod.GET)
     public ModelAndView registration(){
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		ModelAndView modelAndView = new ModelAndView();
-		Account account = new Account();
-		modelAndView.addObject("account", account);
-        modelAndView.setViewName("registration");
+		
+		if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
+		    /* The user is logged in */
+	        modelAndView.setViewName("redirect:/index");
+			return modelAndView;
+		}
+		else {
+			Account account = new Account();
+			modelAndView.addObject("account", account);
+	        modelAndView.setViewName("registration");
+		}
+        
         return modelAndView;
     }
 	
@@ -60,6 +70,7 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
+        	accountService.createAccount(account);
             redirectAttributes.addFlashAttribute("successMessage", "註冊成功");
             redirectAttributes.addFlashAttribute("alertClass", "alert-success");
             modelAndView.setViewName("redirect:/login");
