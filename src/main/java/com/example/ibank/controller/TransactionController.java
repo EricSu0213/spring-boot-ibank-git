@@ -146,13 +146,20 @@ public class TransactionController {
     	
     	ModelAndView modelAndView = new ModelAndView();
     	
-    	try {
-    		transactionService.transfer(userEmail, RemoteEmail, amount);
-    		modelAndView.setViewName("redirect:/index");
+    	if(!userEmail.equals(RemoteEmail)) {
+	    	try {
+	    		transactionService.transfer(userEmail, RemoteEmail, amount);
+	    		modelAndView.setViewName("redirect:/index");
+	    	}
+	    	catch(Exception e) {
+	    		modelAndView.addObject("exception", e.getMessage());
+	    		modelAndView.setViewName("/userViews/transferPage");
+	    	}
     	}
-    	catch(Exception e) {
-    		modelAndView.addObject("exception", e.getMessage());
-    		modelAndView.setViewName("/userViews/transferPage");
+    	else {
+    		modelAndView.addObject("transferModel", transferModel);
+    		modelAndView.addObject("exception", "不可匯款給自己");
+            modelAndView.setViewName("/userViews/transferPage");
     	}
     	        
         return modelAndView;
