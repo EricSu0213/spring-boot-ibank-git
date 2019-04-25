@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ibank.entity.Transaction;
 
-public interface TransactionRepository extends CrudRepository<Transaction, Long>, JpaRepository<Transaction,Long> ,JpaSpecificationExecutor<Transaction> {
+public interface TransactionRepository extends JpaRepository<Transaction,Long> {
 	
 	List<Transaction> findByAccountEmailOrderByDateDesc(String email);
 	
